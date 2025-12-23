@@ -1,0 +1,31 @@
+{
+  "name": "flip-game-provider",
+  "version": "1.0.0",
+  "description": "Flip (coin flip) gambling game provider with provably fair algorithm",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "platform": "node mock-platform/server.js",
+    "demo": "concurrently \"npm start\" \"npm run platform\""
+  },
+  "keywords": [
+    "flip",
+    "coin-flip",
+    "game",
+    "provider",
+    "gambling",
+    "provably-fair",
+    "websocket"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
