@@ -71,7 +71,7 @@ class FlipControls {
     }
 
     // Connect to controls namespace
-    this.socket = io('/ws/controls', {
+    this.socket = io('/flip/ws/controls', {
       path: "/flip/socket.io/",    
       query: { sessionId: this.sessionId },
       transports: ['websocket', 'polling']
