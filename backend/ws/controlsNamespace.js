@@ -27,7 +27,7 @@ const flipEngine = require('../engine/flipEngine');
  */
 
 function setupControlsNamespace(io) {
-  const controlsNamespace = io.of('/ws/controls');
+  const controlsNamespace = io.of('/flip/ws/controls');
 
   controlsNamespace.on('connection', async (socket) => {
     const sessionId = socket.handshake.query.sessionId;
