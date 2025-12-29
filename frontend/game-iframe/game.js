@@ -40,6 +40,7 @@ class FlipGame {
 
     // Connect to game namespace
     this.socket = io('/flip/ws/game', {
+      path: "/flip/socket.io/",    
       query: { sessionId: this.sessionId },
       transports: ['websocket', 'polling']
     });
