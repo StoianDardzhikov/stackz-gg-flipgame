@@ -203,8 +203,8 @@ app.get('/health', (req, res) => {
 // Initialize WebSocket Namespaces
 // ==================
 
-const gameNamespace = setupGameNamespace(io.of('/flip/ws'));
-const controlsNamespace = setupControlsNamespace(io.of('/flip/ws'));
+const gameNamespace = setupGameNamespace(io);
+const controlsNamespace = setupControlsNamespace(io);
 
 // Pass namespaces to round service for broadcasting
 roundService.setNamespaces(gameNamespace, controlsNamespace);
