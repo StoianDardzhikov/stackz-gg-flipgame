@@ -13,7 +13,7 @@ const roundService = require('../services/roundService');
  */
 
 function setupGameNamespace(io) {
-  const gameNamespace = io.of('/ws/game');
+  const gameNamespace = io.of('/flip/ws/game');
 
   gameNamespace.on('connection', (socket) => {
     const sessionId = socket.handshake.query.sessionId;
