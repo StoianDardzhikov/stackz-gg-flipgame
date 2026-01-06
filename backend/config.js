@@ -8,8 +8,8 @@ module.exports = {
   // Game configuration
   GAME: {
     ROUND_DELAY_MS: 2000,           // Delay between rounds
-    BETTING_PHASE_MS: 10000,        // Time for players to place bets (10 seconds)
-    RESULT_REVEAL_MS: 3000,         // Time to show result before next round
+    BETTING_PHASE_MS: 60000,        // Time for players to place bets (60 seconds / 1 minute)
+    RESULT_REVEAL_MS: 5000,         // Time to show result before next round
     MIN_BET: 1,
     MAX_BET: 100000000000,
     PAYOUT_MULTIPLIER: 1.95,        // Payout multiplier for HEADS/TAILS (1.95x = 2.5% house edge)

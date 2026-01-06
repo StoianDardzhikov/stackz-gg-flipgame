@@ -146,8 +146,8 @@ class FlipControls {
     });
 
     this.socket.on('waiting', (data) => {
-      this.roundStatusBannerEl.textContent = data.message;
-      this.roundStatusBannerEl.className = 'round-status-banner';
+      this.roundStatusBannerEl.textContent = data.message || 'WAITING...';
+      this.roundStatusBannerEl.className = 'round-status-btn betting';
     });
   }
 
@@ -323,23 +323,24 @@ class FlipControls {
   }
 
   updateRoundStatusUI() {
-    this.roundStatusBannerEl.className = 'round-status-banner';
+    this.roundStatusBannerEl.className = 'round-status-btn';
 
     switch (this.roundStatus) {
       case 'betting':
-        this.roundStatusBannerEl.textContent = '🎲 BETTING PHASE';
+        this.roundStatusBannerEl.textContent = 'BETTING PHASE';
         this.roundStatusBannerEl.classList.add('betting');
         break;
       case 'revealing':
-        this.roundStatusBannerEl.textContent = '🔄 REVEALING RESULT';
+        this.roundStatusBannerEl.textContent = 'REVEALING RESULT';
         this.roundStatusBannerEl.classList.add('revealing');
         break;
       case 'finished':
-        this.roundStatusBannerEl.textContent = '✅ ROUND FINISHED';
+        this.roundStatusBannerEl.textContent = 'ROUND FINISHED';
         this.roundStatusBannerEl.classList.add('finished');
         break;
       default:
-        this.roundStatusBannerEl.textContent = '⏳ Waiting...';
+        this.roundStatusBannerEl.textContent = 'WAITING...';
+        this.roundStatusBannerEl.classList.add('betting');
     }
   }
 

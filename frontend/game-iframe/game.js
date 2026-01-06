@@ -10,8 +10,10 @@ class FlipGame {
 
     // DOM elements
     this.coinEl = document.getElementById('coin');
+    this.coinImageEl = document.getElementById('coinImage');
     this.resultTextEl = document.getElementById('resultText');
     this.statusTextEl = document.getElementById('statusText');
+    this.roundNumberEl = document.getElementById('roundNumber');
     this.countdownEl = document.getElementById('countdown');
     this.roundIdEl = document.getElementById('roundId');
     this.seedHashEl = document.getElementById('seedHash');
@@ -22,6 +24,7 @@ class FlipGame {
     this.currentResult = null;
     this.roundStatus = 'waiting';
     this.history = [];
+    this.countdownInterval = null;
 
     // Initialize
     this.init();
@@ -74,7 +77,8 @@ class FlipGame {
       this.roundStatus = 'waiting';
       this.statusTextEl.textContent = data.message;
       this.resultTextEl.textContent = '-';
-      this.coinEl.classList.remove('flipping');
+      this.roundNumberEl.textContent = '';
+      this.coinEl.classList.remove('flipping', 'edge');
     });
 
     this.socket.on('betting_phase', (data) => {
@@ -108,12 +112,15 @@ class FlipGame {
     this.seedHashEl.textContent = `Hash: ${data.serverSeedHash.substring(0, 16)}...`;
 
     this.resultTextEl.textContent = 'PLACE YOUR BETS';
-    this.resultTextEl.className = 'result-text';
     this.statusTextEl.textContent = 'Choose HEADS, TAILS, or EDGE';
-    this.coinEl.classList.remove('flipping');
+    this.roundNumberEl.textContent = '';
+    this.coinEl.classList.remove('flipping', 'edge');
+    
+    // Reset coin to heads position
+    this.coinImageEl.src = 'assets/coins/heads.png';
 
-    // Start countdown (10 seconds)
-    this.startCountdown(10);
+    // Start countdown (60 seconds)
+    this.startCountdown(60);
   }
 
   handleReveal(data) {
@@ -122,25 +129,34 @@ class FlipGame {
     this.roundStatus = 'revealing';
     this.currentResult = data.result;
 
-    // Flip animation - special animation for EDGE
+    // Clear countdown
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
+    }
+    this.countdownEl.textContent = '';
+
+    // Change coin image based on result
+    const imagePath = this.getCoinImagePath(data.result);
+    
+    // Flip animation
     if (data.result === 'EDGE') {
-      this.coinEl.classList.add('flipping-to-edge');
+      this.coinEl.classList.add('flipping');
       setTimeout(() => {
-        this.coinEl.classList.remove('flipping-to-edge');
-        this.updateCoinDisplay(data.result);
+        this.coinEl.classList.remove('flipping');
+        this.coinImageEl.src = imagePath;
+        this.coinEl.classList.add('edge');
       }, 2500);
     } else {
       this.coinEl.classList.add('flipping');
       setTimeout(() => {
         this.coinEl.classList.remove('flipping');
-        this.updateCoinDisplay(data.result);
+        this.coinImageEl.src = imagePath;
       }, 2500);
     }
 
     this.resultTextEl.textContent = data.result;
-    this.resultTextEl.className = `result-text ${data.result.toLowerCase()}`;
     this.statusTextEl.textContent = 'Revealing result...';
-    this.countdownEl.textContent = '';
   }
 
   handleRevealing(data) {
@@ -148,9 +164,15 @@ class FlipGame {
     this.roundStatus = 'revealing';
     this.currentResult = data.result;
     this.roundIdEl.textContent = data.roundId;
-    this.updateCoinDisplay(data.result);
+    
+    const imagePath = this.getCoinImagePath(data.result);
+    this.coinImageEl.src = imagePath;
+    
+    if (data.result === 'EDGE') {
+      this.coinEl.classList.add('edge');
+    }
+    
     this.resultTextEl.textContent = data.result;
-    this.resultTextEl.className = `result-text ${data.result.toLowerCase()}`;
     this.statusTextEl.textContent = 'Revealing result...';
   }
 
@@ -160,10 +182,18 @@ class FlipGame {
     this.roundStatus = 'finished';
     this.currentResult = data.result;
 
-    this.updateCoinDisplay(data.result);
+    const imagePath = this.getCoinImagePath(data.result);
+    this.coinImageEl.src = imagePath;
+    
+    if (data.result === 'EDGE') {
+      this.coinEl.classList.add('edge');
+    } else {
+      this.coinEl.classList.remove('edge');
+    }
+
     this.resultTextEl.textContent = data.result;
-    this.resultTextEl.className = `result-text ${data.result.toLowerCase()}`;
-    this.statusTextEl.textContent = 'Round finished!';
+    this.statusTextEl.textContent = 'Round Finished!';
+    this.roundNumberEl.textContent = this.extractRoundNumber(data.roundId);
 
     // Add to history
     this.history.unshift({
@@ -179,36 +209,48 @@ class FlipGame {
     this.renderHistory();
   }
 
-  updateCoinDisplay(result) {
-    // Remove all classes
-    this.coinEl.className = 'coin';
-
-    // Add result class to show correct face
+  getCoinImagePath(result) {
     if (result === 'HEADS') {
-      this.coinEl.style.transform = 'rotateY(0deg)';
-      this.coinEl.style.filter = '';
+      return 'assets/coins/heads.png';
     } else if (result === 'TAILS') {
-      this.coinEl.style.transform = 'rotateY(180deg)';
-      this.coinEl.style.filter = '';
+      return 'assets/coins/tails.png';
     } else if (result === 'EDGE') {
-      this.coinEl.classList.add('edge');
-      // L'animation edgeRoll sera appliquée via CSS
+      // Alternate between edge1 and edge2 for variety
+      return Math.random() > 0.5 ? 'assets/coins/edge1.png' : 'assets/coins/edge2.png';
     }
+    return 'assets/coins/heads.png';
+  }
+
+  extractRoundNumber(roundId) {
+    // Extract number from round ID like "F-1234567890-42"
+    const parts = roundId.split('-');
+    return parts.length > 2 ? `#${parts[2]}` : '';
   }
 
   startCountdown(seconds) {
-    let remaining = seconds;
-    this.countdownEl.textContent = remaining;
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
 
-    const interval = setInterval(() => {
+    let remaining = seconds;
+    this.countdownEl.textContent = this.formatTime(remaining);
+
+    this.countdownInterval = setInterval(() => {
       remaining--;
       if (remaining <= 0) {
         this.countdownEl.textContent = '';
-        clearInterval(interval);
+        clearInterval(this.countdownInterval);
+        this.countdownInterval = null;
       } else {
-        this.countdownEl.textContent = remaining;
+        this.countdownEl.textContent = this.formatTime(remaining);
       }
     }, 1000);
+  }
+
+  formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   }
 
   renderHistory() {
@@ -217,14 +259,14 @@ class FlipGame {
     this.history.slice(0, 15).forEach(round => {
       const item = document.createElement('div');
       item.className = `history-item ${round.result.toLowerCase()}`;
-      if (round.result === 'HEADS') {
-        item.textContent = 'H';
-      } else if (round.result === 'TAILS') {
-        item.textContent = 'T';
-      } else {
-        item.textContent = 'E';
-      }
-      item.title = `Round: ${round.id}`;
+      
+      // Add small coin image
+      const img = document.createElement('img');
+      img.src = this.getCoinImagePath(round.result);
+      img.alt = round.result;
+      item.appendChild(img);
+      
+      item.title = `Round: ${round.id} - ${round.result}`;
       this.historyBarEl.appendChild(item);
     });
   }
@@ -234,4 +276,3 @@ class FlipGame {
 document.addEventListener('DOMContentLoaded', () => {
   window.flipGame = new FlipGame();
 });
-

@@ -193,8 +193,12 @@
 
     .iframes-container {
       flex: 1;
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      grid-template-rows: 1fr 180px;
+      grid-template-areas: 
+        "game controls-vertical"
+        "controls-horizontal controls-vertical";
       padding: 20px;
       gap: 20px;
     }
@@ -207,14 +211,18 @@
     }
 
     .iframe-wrapper.game {
-      flex: 2;
+      grid-area: game;
       min-height: 400px;
     }
 
     .iframe-wrapper.controls {
-      flex: 1;
-      min-width: 320px;
-      max-width: 400px;
+      grid-area: controls-vertical;
+      min-width: 400px;
+    }
+
+    .iframe-wrapper.controls-horizontal {
+      grid-area: controls-horizontal;
+      min-height: 180px;
     }
 
     .iframe-wrapper iframe {
@@ -365,7 +373,10 @@
           <iframe id="gameIframe" title="Flip Game"></iframe>
         </div>
         <div class="iframe-wrapper controls">
-          <iframe id="controlsIframe" title="Game Controls"></iframe>
+          <iframe id="controlsIframe" title="Game Controls Vertical"></iframe>
+        </div>
+        <div class="iframe-wrapper controls-horizontal">
+          <iframe id="controlsIframeHorizontal" title="Game Controls Horizontal"></iframe>
         </div>
       </div>
     </main>
@@ -390,6 +401,7 @@
     const sessionInfoEl = document.getElementById('sessionInfo');
     const gameIframeEl = document.getElementById('gameIframe');
     const controlsIframeEl = document.getElementById('controlsIframe');
+    const controlsIframeHorizontalEl = document.getElementById('controlsIframeHorizontal');
     const headerBalanceEl = document.getElementById('headerBalance');
     const headerBalanceAmountEl = document.getElementById('headerBalanceAmount');
     const transactionListEl = document.getElementById('transactionList');
@@ -476,13 +488,14 @@
         currentSession = data.sessionId;
 
         noGameStateEl.style.display = 'none';
-        iframesContainerEl.style.display = 'flex';
+        iframesContainerEl.style.display = 'grid';
         gameHeaderEl.style.display = 'flex';
 
         sessionInfoEl.textContent = `Session: ${currentSession.substring(0, 20)}...`;
 
         gameIframeEl.src = data.gameUrl;
         controlsIframeEl.src = data.controlsUrl;
+        controlsIframeHorizontalEl.src = data.controlsUrlHorizontal || data.controlsUrl.replace('/controls-iframe', '/controls-iframe-horizontal');
 
         startBalancePolling();
 

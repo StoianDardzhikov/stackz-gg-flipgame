@@ -28,6 +28,13 @@ app.use((req, res, next) => {
   next();
 });
 
+// ==================
+// STATIC ASSETS - Must be BEFORE other routes
+// ==================
+const assetsPath = path.join(__dirname, '../frontend/assets');
+app.use('/assets', express.static(assetsPath));
+app.use('/flip/assets', express.static(assetsPath));
+
 // Create HTTP server
 const server = http.createServer(app);
 
@@ -178,14 +185,22 @@ app.get('/game-iframe', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/game-iframe/index.html'));
 });
 
-// Serve controls iframe
+// Serve controls iframe (vertical)
 app.get('/controls-iframe', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/controls-iframe/index.html'));
 });
 
-// Serve static files
+// Serve controls iframe (horizontal)
+app.get('/controls-iframe-horizontal', (req, res) => {
+  const filePath = path.join(__dirname, '../frontend/controls-iframe-horizontal/index.html');
+  console.log('[Server] Serving horizontal controls:', filePath);
+  res.sendFile(filePath);
+});
+
+// Serve static files for iframes
 app.use('/game-iframe', express.static(path.join(__dirname, '../frontend/game-iframe')));
 app.use('/controls-iframe', express.static(path.join(__dirname, '../frontend/controls-iframe')));
+app.use('/controls-iframe-horizontal', express.static(path.join(__dirname, '../frontend/controls-iframe-horizontal')));
 
 // ==================
 // Health Check
@@ -223,7 +238,8 @@ server.listen(config.PORT, () => {
 ║  Endpoints:                                                   ║
 ║  - POST /session/init     Initialize player session           ║
 ║  - GET  /game-iframe      Game visualization iframe           ║
-║  - GET  /controls-iframe  Player controls iframe              ║
+║  - GET  /controls-iframe  Player controls iframe (vertical)   ║
+║  - GET  /controls-iframe-horizontal  Controls (horizontal)   ║
 ║  - GET  /provably-fair    Verification data                   ║
 ║  - GET  /game/state       Current game state                  ║
 ║  - GET  /game/history     Round history                       ║

@@ -327,7 +327,8 @@ app.post('/api/launch-game', async (req, res) => {
       success: true,
       sessionId: data.sessionId,
       gameUrl: `${CONFIG.PROVIDER_URL}${data.gameUrl}`,
-      controlsUrl: `${CONFIG.PROVIDER_URL}${data.controlsUrl}`
+      controlsUrl: `${CONFIG.PROVIDER_URL}${data.controlsUrl}`,
+      controlsUrlHorizontal: `${CONFIG.PROVIDER_URL}${data.controlsUrlHorizontal || data.controlsUrl.replace('/controls-iframe', '/controls-iframe-horizontal')}`
     });
   } catch (error) {
     console.error('[Platform] Failed to launch game:', error.message);
