@@ -249,7 +249,7 @@ class FlipControls {
     this.tailsBtn.classList.remove('selected');
     this.edgeBtn.classList.remove('selected');
 
-    this.showStatus('Place your bets! 60 seconds remaining', 'info');
+    this.showStatus('Place your bets! 30 seconds remaining', 'info');
   }
 
   handleRoundReveal(data) {
@@ -293,7 +293,7 @@ class FlipControls {
 
     // Disable bet button while processing
     this.betBtn.disabled = true;
-    this.betBtn.textContent = 'PLACING...';
+    this.betBtn.textContent = 'PLACED';
 
     // Send bet to server
     this.socket.emit('bet', { amount, choice: this.selectedChoice });

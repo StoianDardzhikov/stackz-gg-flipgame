@@ -119,8 +119,8 @@ class FlipGame {
     // Reset coin to heads position
     this.coinImageEl.src = 'assets/coins/heads.png';
 
-    // Start countdown (60 seconds)
-    this.startCountdown(60);
+    // Start countdown (30 seconds)
+    this.startCountdown(30);
   }
 
   handleReveal(data) {
@@ -129,12 +129,13 @@ class FlipGame {
     this.roundStatus = 'revealing';
     this.currentResult = data.result;
 
-    // Clear countdown
+    // Clear countdown and hide it
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
       this.countdownInterval = null;
     }
     this.countdownEl.textContent = '';
+    this.countdownEl.style.display = 'none';
 
     // Change coin image based on result
     const imagePath = this.getCoinImagePath(data.result);
@@ -232,13 +233,24 @@ class FlipGame {
       clearInterval(this.countdownInterval);
     }
 
+    // Reset countdown display
+    this.countdownEl.classList.remove('fade-out');
+    this.countdownEl.style.opacity = '1';
+    this.countdownEl.style.display = 'block';
+
     let remaining = seconds;
     this.countdownEl.textContent = this.formatTime(remaining);
 
     this.countdownInterval = setInterval(() => {
       remaining--;
       if (remaining <= 0) {
-        this.countdownEl.textContent = '';
+        // Fade out animation
+        this.countdownEl.classList.add('fade-out');
+        setTimeout(() => {
+          this.countdownEl.textContent = '';
+          this.countdownEl.style.display = 'none';
+          this.countdownEl.classList.remove('fade-out');
+        }, 500); // Wait for fade-out animation to complete
         clearInterval(this.countdownInterval);
         this.countdownInterval = null;
       } else {

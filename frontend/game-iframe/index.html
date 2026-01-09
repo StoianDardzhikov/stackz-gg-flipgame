@@ -167,13 +167,36 @@
       margin-top: 5px;
     }
 
-    /* Countdown */
+    /* Countdown - positioned on coin */
     .countdown {
-      font-size: 3rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4.5rem;
       color: #ff00ff;
-      margin-top: 20px;
       font-weight: 900;
-      text-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+      text-shadow: 0 0 40px rgba(255, 0, 255, 1), 0 0 80px rgba(255, 0, 255, 0.8);
+      z-index: 10;
+      pointer-events: none;
+      opacity: 1;
+      display: none;
+      transition: opacity 0.5s ease-out;
+      animation: countdownPulse 1s ease-in-out infinite;
+    }
+
+    .countdown.fade-out {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    @keyframes countdownPulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
     }
 
     /* Round info top-left */
@@ -321,6 +344,7 @@
       <div class="coin-glow"></div>
       <div class="coin" id="coin">
         <img id="coinImage" src="assets/coins/heads.png" alt="Coin">
+        <div class="countdown" id="countdown"></div>
       </div>
     </div>
 
@@ -329,7 +353,6 @@
       <div class="result-text" id="resultText">-</div>
       <div class="round-status" id="statusText">Connecting...</div>
       <div class="round-number" id="roundNumber"></div>
-      <div class="countdown" id="countdown"></div>
     </div>
 
     <!-- History bar -->

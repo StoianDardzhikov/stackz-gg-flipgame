@@ -174,37 +174,42 @@
 
     .choice-btn.heads {
       color: #ff00ff;
-      border-color: #ff00ff;
+      border-color: rgba(255, 0, 255, 0.3);
     }
 
     .choice-btn.tails {
       color: #8a2be2;
-      border-color: #8a2be2;
+      border-color: rgba(138, 43, 226, 0.3);
     }
 
     .choice-btn.edge {
       color: #8a2be2;
-      border-color: #8a2be2;
+      border-color: rgba(138, 43, 226, 0.3);
     }
 
     .choice-btn:hover:not(:disabled) {
       transform: scale(1.05);
-      box-shadow: 0 0 25px currentColor;
+      border-color: currentColor;
     }
 
     .choice-btn.selected {
       background: rgba(255, 0, 255, 0.2);
       box-shadow: 0 0 30px currentColor;
       transform: scale(1.05);
+      border-color: currentColor;
     }
 
     .choice-btn.heads.selected {
       background: rgba(255, 0, 255, 0.3);
+      border-color: #ff00ff;
+      box-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
     }
 
     .choice-btn.tails.selected,
     .choice-btn.edge.selected {
       background: rgba(138, 43, 226, 0.3);
+      border-color: #8a2be2;
+      box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
     }
 
     .choice-btn:disabled {
