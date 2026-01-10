@@ -205,6 +205,77 @@
       }
     }
 
+    /* Betting Timer - Large centered timer */
+    #betting-timer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.85);
+      padding: 50px 100px;
+      border-radius: 30px;
+      text-align: center;
+      z-index: 40;
+      border: 6px solid #ff00ff;
+      display: none;
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.3);
+    }
+
+    #betting-timer.active {
+      display: block;
+      animation: timerPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes timerPulse {
+      0%, 100% {
+        box-shadow: 0 0 40px rgba(255, 0, 255, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 80px rgba(255, 0, 255, 0.6);
+      }
+    }
+
+    #betting-timer h3 {
+      color: #ff00ff;
+      font-size: 32px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-weight: 900;
+    }
+
+    #betting-timer .timer-value {
+      font-size: 120px;
+      font-weight: bold;
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+    }
+
+    #betting-timer .timer-label {
+      font-size: 24px;
+      color: #888;
+      margin-top: 10px;
+    }
+
+    #betting-timer.closing {
+      border-color: #ff4444;
+      animation: timerUrgent 0.5s ease-in-out infinite;
+    }
+
+    #betting-timer.closing h3 {
+      color: #ff4444;
+    }
+
+    @keyframes timerUrgent {
+      0%, 100% {
+        box-shadow: 0 0 40px rgba(255, 68, 68, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 80px rgba(255, 68, 68, 0.8);
+      }
+    }
+
     /* Round info top-left */
     .round-info {
       position: absolute;
@@ -357,6 +428,13 @@
     <div class="status-section">
       <div class="round-status" id="statusText">Connecting...</div>
       <div class="countdown" id="countdown"></div>
+    </div>
+
+    <!-- Betting Timer - Large centered timer -->
+    <div id="betting-timer">
+      <h3>Bets Closing In</h3>
+      <div class="timer-value" id="timer-value">30</div>
+      <div class="timer-label">seconds</div>
     </div>
 
     <!-- Result display -->

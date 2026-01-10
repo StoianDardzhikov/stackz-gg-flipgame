@@ -75,8 +75,7 @@ class SessionService {
     return {
       sessionId,
       gameUrl: `/game-iframe?sessionId=${sessionId}`,
-      controlsUrl: `/controls-iframe?sessionId=${sessionId}`,
-      controlsUrlHorizontal: `/controls-iframe-horizontal?sessionId=${sessionId}`
+      controlsUrl: `/controls-iframe?sessionId=${sessionId}`
     };
   }
 

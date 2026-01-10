@@ -14,28 +14,45 @@
     body {
       background: linear-gradient(180deg, #0a0a1a 0%, #1a0a2e 50%, #0a0a1a 100%);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
+      height: 100vh;
       color: #fff;
       padding: 0;
+      overflow: hidden;
+      margin: 0;
     }
 
     .controls-container {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 20px;
+      width: 100%;
+      height: 100%;
+      padding: 10px 15px;
       display: flex;
-      flex-direction: column;
       gap: 15px;
+      align-items: center;
+      box-sizing: border-box;
     }
 
-    /* Connection Status */
+    /* Colonne 1 - Status */
+    .status-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 180px;
+    }
+
+    /* Ligne 1 : CONNECTED et Balance label côte à côte */
+    .status-header {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
     .connection-status {
-      text-align: center;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
     }
 
     .connection-status.connected {
@@ -50,109 +67,81 @@
       border: 1px solid #ff4444;
     }
 
-    /* Balance display */
-    .balance-section {
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-      border: 1px solid rgba(138, 43, 226, 0.3);
+    .balance-label {
+      font-size: 0.7rem;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .balance-label {
-      font-size: 0.85rem;
-      color: #888;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    /* Ligne 2 : Boîte violette avec montant */
+    .balance-box {
+      background: rgba(138, 43, 226, 0.3);
+      border: 1px solid rgba(138, 43, 226, 0.5);
+      border-radius: 6px;
+      padding: 10px 12px;
+      text-align: center;
     }
 
     .balance-amount {
-      font-size: 2rem;
+      font-size: 1rem;
       font-weight: 900;
       color: #00ff88;
-      text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
     }
 
-    /* Round Status */
-    .round-status-banner {
-      text-align: center;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 0.9rem;
+    /* Ligne 3 : Bouton rouge ROUND FINISHED */
+    .round-status-btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      border: 2px solid;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .round-status-banner.betting {
+    .round-status-btn.betting {
       background: rgba(255, 170, 0, 0.2);
       color: #ffaa00;
-      border-color: #ffaa00;
+      border: 1px solid #ffaa00;
     }
 
-    .round-status-banner.revealing {
+    .round-status-btn.revealing {
       background: rgba(138, 43, 226, 0.2);
       color: #8a2be2;
-      border-color: #8a2be2;
+      border: 1px solid #8a2be2;
     }
 
-    .round-status-banner.finished {
+    .round-status-btn.finished {
       background: rgba(220, 20, 60, 0.2);
       color: #dc143c;
-      border-color: #dc143c;
+      border: 1px solid #dc143c;
     }
 
-    /* Bet controls */
-    .bet-controls {
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid rgba(138, 43, 226, 0.3);
+    .round-status-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
-    /* Current bet info */
-    .current-bet-info {
-      background: rgba(0, 255, 136, 0.1);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      display: none;
-      text-align: center;
-    }
-
-    .current-bet-info.visible {
-      display: block;
-    }
-
-    .current-bet-info .label {
-      font-size: 0.8rem;
-      color: #888;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-
-    .current-bet-info .value {
-      font-size: 1.4rem;
-      color: #00ff88;
-      font-weight: 900;
-    }
-
-    /* Choice buttons with coin icons */
-    .choice-buttons {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
+    /* Colonne 2 - Choice Buttons */
+    .choice-column {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+      min-width: 200px;
     }
 
     .choice-btn {
-      padding: 15px 10px;
+      padding: 8px 6px;
       border: 3px solid;
-      border-radius: 10px;
-      font-size: 0.9rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
       font-weight: 900;
       cursor: pointer;
       transition: all 0.3s;
@@ -161,15 +150,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      letter-spacing: 1px;
+      gap: 5px;
+      letter-spacing: 0.5px;
     }
 
     .choice-btn img {
-      width: 50px;
-      height: 50px;
+      width: 35px;
+      height: 35px;
       object-fit: contain;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
     }
 
     .choice-btn.heads {
@@ -194,7 +183,7 @@
 
     .choice-btn.selected {
       background: rgba(255, 0, 255, 0.2);
-      box-shadow: 0 0 30px currentColor;
+      box-shadow: 0 0 25px currentColor;
       transform: scale(1.05);
       border-color: currentColor;
     }
@@ -217,27 +206,29 @@
       cursor: not-allowed;
     }
 
-    /* Bet amount section */
-    .bet-amount-section {
-      margin-bottom: 15px;
+    /* Colonne 3 - Bet Amount */
+    .bet-amount-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 160px;
     }
 
     .section-label {
-      font-size: 0.85rem;
+      font-size: 0.7rem;
       color: #888;
-      margin-bottom: 10px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
     .bet-input {
       width: 100%;
       background: rgba(0, 0, 0, 0.6);
       border: 2px solid rgba(138, 43, 226, 0.5);
-      border-radius: 10px;
-      padding: 15px;
+      border-radius: 6px;
+      padding: 10px;
       color: #fff;
-      font-size: 1.3rem;
+      font-size: 0.9rem;
       font-weight: 700;
       text-align: center;
       outline: none;
@@ -246,7 +237,7 @@
 
     .bet-input:focus {
       border-color: #ff00ff;
-      box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
     }
 
     .bet-input:disabled {
@@ -258,20 +249,20 @@
     .quick-bets {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 5px;
     }
 
     .quick-bet-btn {
-      padding: 10px;
+      padding: 8px 4px;
       background: rgba(138, 43, 226, 0.2);
       border: 1px solid rgba(138, 43, 226, 0.4);
-      border-radius: 8px;
+      border-radius: 5px;
       color: #8a2be2;
-      font-size: 0.9rem;
+      font-size: 0.7rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
+      text-align: center;
     }
 
     .quick-bet-btn:hover:not(:disabled) {
@@ -285,13 +276,22 @@
       cursor: not-allowed;
     }
 
-    /* Place bet button */
+    /* Colonne 4 - Place Bet */
+    .place-bet-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-width: 160px;
+      max-width: 180px;
+    }
+
     .btn-place-bet {
       width: 100%;
-      padding: 18px;
+      padding: 20px 25px;
       border: none;
-      border-radius: 12px;
-      font-size: 1.3rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
       font-weight: 900;
       cursor: pointer;
       transition: all 0.3s;
@@ -299,12 +299,13 @@
       letter-spacing: 2px;
       background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #d4af37 100%);
       color: #000;
-      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+      min-height: 60px;
     }
 
     .btn-place-bet:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6);
+      box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
     }
 
     .btn-place-bet:disabled {
@@ -315,11 +316,11 @@
 
     /* Status message */
     .status-message {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 8px;
+      margin-top: 8px;
+      padding: 6px;
+      border-radius: 5px;
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.7rem;
       font-weight: 600;
       display: none;
     }
@@ -344,55 +345,164 @@
       border: 1px solid #ffaa00;
       display: block;
     }
+
+    /* Current bet info (hidden by default, shown when bet is placed) */
+    .current-bet-info {
+      display: none;
+      padding: 8px;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .current-bet-info.visible {
+      display: block;
+    }
+
+    .current-bet-info .label {
+      font-size: 0.65rem;
+      color: #888;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .current-bet-info .value {
+      font-size: 0.9rem;
+      color: #00ff88;
+      font-weight: 900;
+    }
+
+    /* Responsive: Vertical layout for portrait/narrow viewports */
+    @media (max-aspect-ratio: 1/1) {
+      body {
+        padding: 16px;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+
+      .controls-container {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+        padding: 20px;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .status-column {
+        min-width: auto;
+        width: 100%;
+      }
+
+      .status-header {
+        justify-content: space-between;
+      }
+
+      .balance-box {
+        padding: 12px 16px;
+      }
+
+      .balance-amount {
+        font-size: 1.5rem;
+      }
+
+      .round-status-btn {
+        font-size: 0.9rem;
+        padding: 12px;
+      }
+
+      .choice-column {
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        min-width: auto;
+      }
+
+      .choice-btn {
+        flex: 1;
+        padding: 15px 10px;
+      }
+
+      .choice-btn img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .bet-amount-column {
+        min-width: auto;
+        width: 100%;
+      }
+
+      .bet-input {
+        padding: 15px;
+        font-size: 1.3rem;
+      }
+
+      .quick-bets {
+        gap: 8px;
+      }
+
+      .quick-bet-btn {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+
+      .place-bet-column {
+        min-width: auto;
+        max-width: none;
+        width: 100%;
+      }
+
+      .btn-place-bet {
+        padding: 18px;
+        font-size: 1.3rem;
+      }
+
+      .status-message {
+        font-size: 0.9rem;
+        padding: 12px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="controls-container">
-    <!-- Connection status -->
-    <div class="connection-status disconnected" id="connectionStatus">DISCONNECTED</div>
-
-    <!-- Balance display -->
-    <div class="balance-section">
-      <div class="balance-label">Balance</div>
-      <div class="balance-amount" id="balance">0.00 STARS</div>
+    <!-- Colonne 1 - Status -->
+    <div class="status-column">
+      <div class="status-header">
+        <div class="connection-status disconnected" id="connectionStatus">DISCONNECTED</div>
+        <div class="balance-label">Balance</div>
+      </div>
+      <div class="balance-box">
+        <div class="balance-amount" id="balance">0.00 STARS</div>
+      </div>
+      <button class="round-status-btn betting" id="roundStatusBanner" disabled>Connecting...</button>
     </div>
 
-    <!-- Round status banner -->
-    <div class="round-status-banner betting" id="roundStatusBanner">Connecting...</div>
+    <!-- Colonne 2 - Choice Buttons -->
+    <div class="choice-column">
+      <button class="choice-btn heads" id="headsBtn">
+        <img src="assets/coins/heads.png" alt="HEADS">
+        <span>HEADS</span>
+      </button>
+      <button class="choice-btn tails" id="tailsBtn">
+        <img src="assets/coins/tails.png" alt="TAILS">
+        <span>TAILS</span>
+      </button>
+      <button class="choice-btn edge" id="edgeBtn">
+        <img src="assets/coins/edge1.png" alt="EDGE">
+        <span>EDGE</span>
+      </button>
+    </div>
 
-    <!-- Bet controls -->
-    <div class="bet-controls">
-      <!-- Current bet info -->
-      <div class="current-bet-info" id="currentBetInfo">
-        <div class="label">Your Bet</div>
-        <div class="value" id="currentBetAmount">0.00 STARS</div>
-        <div class="value" id="currentBetChoice" style="font-size: 1rem; margin-top: 5px; color: #ff00ff;">-</div>
-      </div>
-
-      <!-- Choice buttons -->
-      <div class="choice-buttons">
-        <button class="choice-btn heads" id="headsBtn">
-          <img src="assets/coins/heads.png" alt="HEADS">
-          <span>HEADS</span>
-        </button>
-        <button class="choice-btn tails" id="tailsBtn">
-          <img src="assets/coins/tails.png" alt="TAILS">
-          <span>TAILS</span>
-        </button>
-        <button class="choice-btn edge" id="edgeBtn">
-          <img src="assets/coins/edge1.png" alt="EDGE">
-          <span>EDGE</span>
-        </button>
-      </div>
-
-      <!-- Bet amount -->
-      <div class="bet-amount-section">
-        <div class="section-label">Bet Amount</div>
-        <input type="number" class="bet-input" id="betAmount"
-               placeholder="0.00" min="1" step="0.10" value="1.00">
-      </div>
-
-      <!-- Quick bet buttons -->
+    <!-- Colonne 3 - Bet Amount -->
+    <div class="bet-amount-column">
+      <div class="section-label">Bet Amount</div>
+      <input type="number" class="bet-input" id="betAmount"
+             placeholder="0.00" min="1" step="0.10" value="1.00">
       <div class="quick-bets">
         <button class="quick-bet-btn" data-action="half">1/2</button>
         <button class="quick-bet-btn" data-action="double">2x</button>
@@ -401,11 +511,16 @@
         <button class="quick-bet-btn" data-amount="10">10</button>
         <button class="quick-bet-btn" data-amount="max">MAX</button>
       </div>
+    </div>
 
-      <!-- Place bet button -->
+    <!-- Colonne 4 - Place Bet -->
+    <div class="place-bet-column">
+      <div class="current-bet-info" id="currentBetInfo">
+        <div class="label">Your Bet</div>
+        <div class="value" id="currentBetAmount">0.00 STARS</div>
+        <div class="value" id="currentBetChoice" style="font-size: 0.8rem; margin-top: 4px; color: #ff00ff;">-</div>
+      </div>
       <button class="btn-place-bet" id="betBtn">PLACE BET</button>
-
-      <!-- Status message -->
       <div class="status-message" id="statusMessage"></div>
     </div>
   </div>

@@ -25,6 +25,7 @@ class FlipGame {
     this.roundStatus = 'waiting';
     this.history = [];
     this.countdownInterval = null;
+    this.bettingTimerInterval = null;
 
     // Initialize
     this.init();
@@ -121,6 +122,8 @@ class FlipGame {
 
     // Start countdown (30 seconds)
     this.startCountdown(30);
+    // Start betting timer (30 seconds)
+    this.startBettingTimer(30);
   }
 
   handleReveal(data) {
@@ -136,6 +139,9 @@ class FlipGame {
     }
     this.countdownEl.textContent = '';
     this.countdownEl.style.display = 'none';
+    
+    // Hide betting timer
+    this.hideBettingTimer();
 
     // Change coin image based on result
     const imagePath = this.getCoinImagePath(data.result);
@@ -263,6 +269,44 @@ class FlipGame {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  startBettingTimer(seconds) {
+    this.hideBettingTimer();
+    let remaining = Math.ceil(seconds);
+    const timerEl = document.getElementById('betting-timer');
+    const valueEl = document.getElementById('timer-value');
+
+    if (!timerEl || !valueEl) return;
+
+    timerEl.classList.add('active');
+    timerEl.classList.remove('closing');
+    valueEl.textContent = remaining;
+
+    this.bettingTimerInterval = setInterval(() => {
+      remaining--;
+      valueEl.textContent = remaining;
+
+      // Add urgency when 5 seconds or less
+      if (remaining <= 5) {
+        timerEl.classList.add('closing');
+      }
+
+      if (remaining <= 0) {
+        this.hideBettingTimer();
+      }
+    }, 1000);
+  }
+
+  hideBettingTimer() {
+    if (this.bettingTimerInterval) {
+      clearInterval(this.bettingTimerInterval);
+      this.bettingTimerInterval = null;
+    }
+    const timerEl = document.getElementById('betting-timer');
+    if (timerEl) {
+      timerEl.classList.remove('active', 'closing');
+    }
   }
 
   renderHistory() {
