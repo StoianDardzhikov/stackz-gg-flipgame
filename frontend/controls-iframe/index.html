@@ -35,36 +35,8 @@
     .status-column {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 10px;
       min-width: 200px;
-    }
-
-    /* Ligne 1 : CONNECTED uniquement (Balance label caché) */
-    .status-header {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .connection-status {
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      white-space: nowrap;
-    }
-
-    .connection-status.connected {
-      background: rgba(0, 255, 136, 0.15);
-      color: #00ff88;
-      border: 1.5px solid #00ff88;
-    }
-
-    .connection-status.disconnected {
-      background: rgba(255, 68, 68, 0.15);
-      color: #ff4444;
-      border: 1.5px solid #ff4444;
     }
 
     .balance-label {
@@ -234,9 +206,9 @@
       background: rgba(138, 43, 226, 0.2);
       border: 2px solid rgba(138, 43, 226, 0.6);
       border-radius: 10px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       color: #fff;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       text-align: center;
       outline: none;
@@ -315,7 +287,12 @@
       color: #000;
       box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
       min-height: 70px;
-      margin: 0 auto; /* Centrage horizontal */
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
     .btn-place-bet:hover:not(:disabled) {
@@ -327,6 +304,29 @@
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
+    }
+
+    /* Style pour le bouton quand un bet est placé */
+    .btn-place-bet.bet-placed {
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(255, 20, 147, 0.4) 50%, rgba(255, 140, 0, 0.3) 100%);
+      border: 1.5px solid rgba(255, 140, 0, 0.5);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+      text-transform: none;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-place-bet .bet-amount-display {
+      font-size: 1.1rem;
+      color: #ff8c00;
+      font-weight: 900;
+      text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+    }
+
+    .btn-place-bet .bet-choice-display {
+      font-size: 0.85rem;
+      color: #fff;
+      font-weight: 600;
     }
 
     /* Status message */
@@ -361,16 +361,18 @@
       display: block;
     }
 
-    /* Current bet info (hidden by default, shown when bet is placed) */
+    /* Current bet info (hidden by default, shown when bet is placed) - Style horse-game */
     .current-bet-info {
       display: none;
-      padding: 12px 16px;
-      background: rgba(0, 255, 136, 0.12);
-      border: 1.5px solid rgba(0, 255, 136, 0.4);
-      border-radius: 10px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(255, 20, 147, 0.4) 50%, rgba(255, 140, 0, 0.3) 100%);
+      border: 1.5px solid rgba(255, 140, 0, 0.5);
+      border-radius: 12px;
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       width: 100%;
+      box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+      position: relative;
     }
 
     .current-bet-info.visible {
@@ -378,19 +380,29 @@
     }
 
     .current-bet-info .label {
-      font-size: 0.7rem;
-      color: #aaa;
-      margin-bottom: 6px;
+      font-size: 0.75rem;
+      color: #fff;
+      margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-weight: 600;
+      letter-spacing: 1px;
+      font-weight: 700;
     }
 
     .current-bet-info .value {
-      font-size: 0.95rem;
-      color: #00ff88;
+      font-size: 1.1rem;
+      color: #ff8c00;
       font-weight: 900;
       letter-spacing: 0.5px;
+      text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+      margin-bottom: 4px;
+    }
+
+    .current-bet-info .value.choice {
+      font-size: 0.85rem;
+      color: #fff;
+      margin-top: 6px;
+      text-shadow: none;
+      font-weight: 600;
     }
 
     /* Responsive: Vertical layout for portrait/narrow viewports */
@@ -416,9 +428,6 @@
         width: 100%;
       }
 
-      .status-header {
-        justify-content: space-between;
-      }
 
       .balance-box {
         padding: 12px 16px;
@@ -497,9 +506,6 @@
   <div class="controls-container">
     <!-- Colonne 1 - Status -->
     <div class="status-column">
-      <div class="status-header">
-        <div class="connection-status disconnected" id="connectionStatus">DISCONNECTED</div>
-      </div>
       <div class="balance-box">
         <div class="balance-amount" id="balance">0.00 STARS</div>
       </div>
@@ -544,9 +550,11 @@
       <div class="current-bet-info" id="currentBetInfo">
         <div class="label">Your Bet</div>
         <div class="value" id="currentBetAmount">0.00 STARS</div>
-        <div class="value" id="currentBetChoice" style="font-size: 0.8rem; margin-top: 4px; color: #ff00ff;">-</div>
+        <div class="value choice" id="currentBetChoice">-</div>
       </div>
-      <button class="btn-place-bet" id="betBtn">PLACE BET</button>
+      <button class="btn-place-bet" id="betBtn">
+        <span class="bet-button-text">PLACE BET</span>
+      </button>
       <div class="status-message" id="statusMessage"></div>
     </div>
   </div>

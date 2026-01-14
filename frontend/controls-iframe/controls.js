@@ -20,7 +20,6 @@ class FlipControls {
     this.currentBetAmountEl = document.getElementById('currentBetAmount');
     this.currentBetChoiceEl = document.getElementById('currentBetChoice');
     this.statusMessageEl = document.getElementById('statusMessage');
-    this.connectionStatusEl = document.getElementById('connectionStatus');
     this.quickBetBtns = document.querySelectorAll('.quick-bet-btn');
 
     // State
@@ -80,14 +79,10 @@ class FlipControls {
     // Connection events
     this.socket.on('connect', () => {
       console.log('[Controls] Connected');
-      this.connectionStatusEl.textContent = 'CONNECTED';
-      this.connectionStatusEl.className = 'connection-status connected';
     });
 
     this.socket.on('disconnect', (reason) => {
       console.log('[Controls] Disconnected:', reason);
-      this.connectionStatusEl.textContent = 'DISCONNECTED';
-      this.connectionStatusEl.className = 'connection-status disconnected';
       this.showStatus('Connection lost', 'error');
     });
 
@@ -264,7 +259,15 @@ class FlipControls {
     console.log('[Controls] Round finished:', data);
 
     this.roundStatus = 'finished';
-    this.updateRoundStatusUI();
+    
+    // Afficher le résultat dans le bouton
+    if (data.result) {
+      this.roundStatusBannerEl.textContent = `🎯 RESULT: ${data.result}`;
+      this.roundStatusBannerEl.className = 'round-status-btn finished';
+    } else {
+      this.updateRoundStatusUI();
+    }
+    
     this.disableBetting();
   }
 
@@ -293,7 +296,7 @@ class FlipControls {
 
     // Disable bet button while processing
     this.betBtn.disabled = true;
-    this.betBtn.textContent = 'PLACED';
+    this.betBtn.innerHTML = '<span class="bet-button-text">PLACING...</span>';
 
     // Send bet to server
     this.socket.emit('bet', { amount, choice: this.selectedChoice });
@@ -347,8 +350,14 @@ class FlipControls {
     if (this.currentBet) {
       this.currentBetInfoEl.classList.add('visible');
       this.currentBetAmountEl.textContent = `${this.currentBet.amount.toFixed(2)} STARS`;
-      this.currentBetChoiceEl.textContent = `Choice: ${this.currentBet.choice}`;
+      this.currentBetChoiceEl.textContent = `on ${this.currentBet.choice}`;
 
+      // Mettre à jour le bouton pour afficher les détails du pari
+      this.betBtn.classList.add('bet-placed');
+      this.betBtn.innerHTML = `
+        <span class="bet-amount-display">${this.currentBet.amount.toFixed(2)} STARS</span>
+        <span class="bet-choice-display">on ${this.currentBet.choice}</span>
+      `;
       this.betBtn.disabled = true;
       this.betAmountEl.disabled = true;
       this.headsBtn.disabled = true;
@@ -360,7 +369,8 @@ class FlipControls {
 
   enableBetting() {
     this.betBtn.disabled = false;
-    this.betBtn.textContent = 'PLACE BET';
+    this.betBtn.classList.remove('bet-placed');
+    this.betBtn.innerHTML = '<span class="bet-button-text">PLACE BET</span>';
     this.betAmountEl.disabled = false;
     this.headsBtn.disabled = false;
     this.tailsBtn.disabled = false;
