@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -39,7 +39,7 @@
       min-width: 200px;
     }
 
-    /* Ligne 1 : CONNECTED et Balance label côte à côte */
+    /* Ligne 1 : CONNECTED uniquement (Balance label caché) */
     .status-header {
       display: flex;
       gap: 12px;
@@ -68,11 +68,7 @@
     }
 
     .balance-label {
-      font-size: 0.75rem;
-      color: #bbb;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
+      display: none; /* Caché comme demandé */
     }
 
     /* Ligne 2 : Boîte violette avec montant */
@@ -209,12 +205,20 @@
       cursor: not-allowed;
     }
 
-    /* Colonne 3 - Bet Amount */
+    /* Colonne 3 - Bet Amount Input + Quick Bet Buttons à droite */
     .bet-amount-column {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 12px;
-      min-width: 180px;
+      align-items: flex-start;
+      min-width: 280px;
+    }
+
+    .bet-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
     }
 
     .section-label {
@@ -250,11 +254,13 @@
       cursor: not-allowed;
     }
 
-    /* Quick bet buttons */
+    /* Quick bet buttons - Grid 2x3 à droite de l'input (comme horse-game) */
     .quick-bets {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 1fr;
       gap: 8px;
+      min-width: 120px;
     }
 
     .quick-bet-btn {
@@ -291,6 +297,7 @@
       min-width: 180px;
       max-width: 200px;
       gap: 10px;
+      margin: 0 auto; /* Centrage horizontal supplémentaire */
     }
 
     .btn-place-bet {
@@ -308,6 +315,7 @@
       color: #000;
       box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
       min-height: 70px;
+      margin: 0 auto; /* Centrage horizontal */
     }
 
     .btn-place-bet:hover:not(:disabled) {
@@ -443,7 +451,12 @@
       }
 
       .bet-amount-column {
+        flex-direction: column;
         min-width: auto;
+        width: 100%;
+      }
+
+      .bet-input-wrapper {
         width: 100%;
       }
 
@@ -453,6 +466,7 @@
       }
 
       .quick-bets {
+        width: 100%;
         gap: 8px;
       }
 
@@ -485,7 +499,6 @@
     <div class="status-column">
       <div class="status-header">
         <div class="connection-status disconnected" id="connectionStatus">DISCONNECTED</div>
-        <div class="balance-label">Balance</div>
       </div>
       <div class="balance-box">
         <div class="balance-amount" id="balance">0.00 STARS</div>
@@ -509,11 +522,13 @@
       </button>
     </div>
 
-    <!-- Colonne 3 - Bet Amount -->
+    <!-- Colonne 3 - Bet Amount Input + Quick Bet Buttons à droite -->
     <div class="bet-amount-column">
-      <div class="section-label">Bet Amount</div>
-      <input type="number" class="bet-input" id="betAmount"
-             placeholder="0.00" min="1" step="0.10" value="1.00">
+      <div class="bet-input-wrapper">
+        <div class="section-label">Bet Amount</div>
+        <input type="number" class="bet-input" id="betAmount"
+               placeholder="0.00" min="1" step="0.10" value="1.00">
+      </div>
       <div class="quick-bets">
         <button class="quick-bet-btn" data-action="half">1/2</button>
         <button class="quick-bet-btn" data-action="double">2x</button>
