@@ -316,15 +316,26 @@ class FlipGame {
       const item = document.createElement('div');
       item.className = `history-item ${round.result.toLowerCase()}`;
       
-      // Add small coin image
-      const img = document.createElement('img');
-      img.src = this.getCoinImagePath(round.result);
-      img.alt = round.result;
-      item.appendChild(img);
+      // Add text letter instead of coin image
+      const text = document.createElement('span');
+      text.className = 'history-letter';
+      text.textContent = this.getResultLetter(round.result);
+      item.appendChild(text);
       
       item.title = `Round: ${round.id} - ${round.result}`;
       this.historyBarEl.appendChild(item);
     });
+  }
+
+  getResultLetter(result) {
+    if (result === 'HEADS') {
+      return 'H';
+    } else if (result === 'TAILS') {
+      return 'T';
+    } else if (result === 'EDGE') {
+      return 'E';
+    }
+    return '';
   }
 }
 
