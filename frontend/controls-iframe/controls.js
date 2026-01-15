@@ -172,7 +172,7 @@ class FlipControls {
       this.balance = data.newBalance;
       this.balanceEl.textContent = `${this.balance.toFixed(2)} STARS`;
 
-      this.showStatus(`Bet placed: ${data.bet.amount.toFixed(2)} STARS on ${data.bet.choice}`, 'success');
+      // Ne pas afficher de message de statut, updateUIForActiveBet() gère l'affichage
       this.updateUIForActiveBet();
     } else {
       this.showStatus(data.error || 'Bet failed', 'error');
@@ -365,8 +365,8 @@ class FlipControls {
       this.edgeBtn.disabled = true;
       this.quickBetBtns.forEach(btn => btn.disabled = true);
       
-      // Afficher le message de statut et le garder visible
-      this.showStatus(`Bet placed: ${this.currentBet.amount.toFixed(2)} STARS on ${this.currentBet.choice}`, 'success');
+      // Cacher le message de statut car les infos sont déjà dans current-bet-info
+      this.hideStatus();
     }
   }
 
