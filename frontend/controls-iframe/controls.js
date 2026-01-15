@@ -189,27 +189,27 @@ class FlipControls {
       this.balanceEl.textContent = `${this.balance.toFixed(2)} STARS`;
     }
 
+    this.currentBet = null;
+    this.selectedChoice = null;
+    this.hideCurrentBetInfo();
+
     this.showStatus(
       `🎉 YOU WON! +${data.winAmount.toFixed(2)} STARS (Bet: ${data.betAmount.toFixed(2)} on ${data.result})`,
       'success'
     );
-
-    this.currentBet = null;
-    this.selectedChoice = null;
-    this.hideCurrentBetInfo();
   }
 
   handleBetLost(data) {
     console.log('[Controls] Bet lost:', data);
 
+    this.currentBet = null;
+    this.selectedChoice = null;
+    this.hideCurrentBetInfo();
+
     this.showStatus(
       `You lost: ${data.betAmount.toFixed(2)} STARS (Result: ${data.result})`,
       'error'
     );
-
-    this.currentBet = null;
-    this.selectedChoice = null;
-    this.hideCurrentBetInfo();
   }
 
   handleBetStatus(data) {
@@ -352,11 +352,11 @@ class FlipControls {
       this.currentBetAmountEl.textContent = `${this.currentBet.amount.toFixed(2)} STARS`;
       this.currentBetChoiceEl.textContent = `on ${this.currentBet.choice}`;
 
-      // Mettre à jour le bouton pour afficher les détails du pari
+      // Mettre à jour le bouton pour afficher le choix et le montant (remplace "PLACE BET")
       this.betBtn.classList.add('bet-placed');
       this.betBtn.innerHTML = `
+        <span class="bet-choice-display">${this.currentBet.choice}</span>
         <span class="bet-amount-display">${this.currentBet.amount.toFixed(2)} STARS</span>
-        <span class="bet-choice-display">on ${this.currentBet.choice}</span>
       `;
       this.betBtn.disabled = true;
       this.betAmountEl.disabled = true;
@@ -364,6 +364,9 @@ class FlipControls {
       this.tailsBtn.disabled = true;
       this.edgeBtn.disabled = true;
       this.quickBetBtns.forEach(btn => btn.disabled = true);
+      
+      // Afficher le message de statut et le garder visible
+      this.showStatus(`Bet placed: ${this.currentBet.amount.toFixed(2)} STARS on ${this.currentBet.choice}`, 'success');
     }
   }
 
@@ -395,9 +398,9 @@ class FlipControls {
     this.statusMessageEl.textContent = message;
     this.statusMessageEl.className = `status-message ${type}`;
 
-    // Auto-hide after 5 seconds
+    // Auto-hide after 5 seconds, but keep visible if bet is placed
     setTimeout(() => {
-      if (this.statusMessageEl.textContent === message) {
+      if (this.statusMessageEl.textContent === message && !this.currentBet) {
         this.hideStatus();
       }
     }, 5000);

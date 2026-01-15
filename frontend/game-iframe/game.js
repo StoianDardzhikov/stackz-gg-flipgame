@@ -18,7 +18,6 @@ class FlipGame {
     this.roundIdEl = document.getElementById('roundId');
     this.seedHashEl = document.getElementById('seedHash');
     this.historyBarEl = document.getElementById('historyBar');
-    this.connectionStatusEl = document.getElementById('connectionStatus');
 
     // Game state
     this.currentResult = null;
@@ -52,14 +51,10 @@ class FlipGame {
     // Connection events
     this.socket.on('connect', () => {
       console.log('[Game] Connected');
-      this.connectionStatusEl.textContent = 'CONNECTED';
-      this.connectionStatusEl.className = 'connection-status connected';
     });
 
     this.socket.on('disconnect', (reason) => {
       console.log('[Game] Disconnected:', reason);
-      this.connectionStatusEl.textContent = 'DISCONNECTED';
-      this.connectionStatusEl.className = 'connection-status disconnected';
       this.statusTextEl.textContent = 'Connection lost...';
     });
 
@@ -146,6 +141,10 @@ class FlipGame {
     // Change coin image based on result
     const imagePath = this.getCoinImagePath(data.result);
     
+    // Hide result text during animation
+    this.resultTextEl.textContent = '';
+    this.statusTextEl.textContent = 'Revealing result...';
+    
     // Flip animation
     if (data.result === 'EDGE') {
       this.coinEl.classList.add('flipping');
@@ -153,17 +152,18 @@ class FlipGame {
         this.coinEl.classList.remove('flipping');
         this.coinImageEl.src = imagePath;
         this.coinEl.classList.add('edge');
+        // Show result text after animation completes
+        this.resultTextEl.textContent = data.result;
       }, 2500);
     } else {
       this.coinEl.classList.add('flipping');
       setTimeout(() => {
         this.coinEl.classList.remove('flipping');
         this.coinImageEl.src = imagePath;
+        // Show result text after animation completes
+        this.resultTextEl.textContent = data.result;
       }, 2500);
     }
-
-    this.resultTextEl.textContent = data.result;
-    this.statusTextEl.textContent = 'Revealing result...';
   }
 
   handleRevealing(data) {

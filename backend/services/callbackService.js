@@ -60,9 +60,17 @@ class CallbackService {
   /**
    * Bet callback - deduct player balance
    */
-  async placeBet({ callbackBaseUrl, roundId, playerId, sessionId, amount, currency }) {
+  async placeBet({ callbackBaseUrl, roundId, playerId, sessionId, amount, currency, choice }) {
     const url = `${callbackBaseUrl}/bet`;
     const requestId = `BET-${roundId}-${playerId}-${Date.now()}`;
+
+    // Convert choice to selectionName format (Heads, Tails, Edge)
+    const selectionNameMap = {
+      'HEADS': 'Heads',
+      'TAILS': 'Tails',
+      'EDGE': 'Edge'
+    };
+    const selectionName = selectionNameMap[choice] || choice;
 
     const payload = {
       requestId,
@@ -71,6 +79,9 @@ class CallbackService {
       sessionId,
       amount,
       currency,
+      metadata: {
+        selectionName
+      },
       timestamp: Date.now()
     };
 

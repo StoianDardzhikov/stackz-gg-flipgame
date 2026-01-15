@@ -67,7 +67,8 @@ class BetService {
       playerId,
       sessionId,
       amount: roundedAmount,
-      currency
+      currency,
+      choice
     });
 
     if (!callbackResult.success) {

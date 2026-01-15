@@ -355,29 +355,6 @@
       box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
     }
 
-    /* Connection status */
-    .connection-status {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-
-    .connection-status.connected {
-      background: rgba(0, 255, 136, 0.2);
-      color: #00ff88;
-      border: 1px solid #00ff88;
-    }
-
-    .connection-status.disconnected {
-      background: rgba(255, 68, 68, 0.2);
-      color: #ff4444;
-      border: 1px solid #ff4444;
-    }
-
     /* Waiting state */
     .waiting-message {
       text-align: center;
@@ -407,9 +384,6 @@
 </head>
 <body>
   <div class="game-container">
-    <!-- Connection status -->
-    <div class="connection-status disconnected" id="connectionStatus">DISCONNECTED</div>
-
     <!-- Round info -->
     <div class="round-info">
       <div>Round: <span class="round-id" id="roundId">-</span></div>
