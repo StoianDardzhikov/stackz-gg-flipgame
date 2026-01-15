@@ -28,7 +28,10 @@
       display: flex;
       gap: 25px;
       align-items: center;
+      justify-content: center;
       box-sizing: border-box;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     /* Colonne 1 - Status */
@@ -37,6 +40,7 @@
       flex-direction: column;
       gap: 10px;
       min-width: 200px;
+      flex-shrink: 0;
     }
 
     .balance-label {
@@ -105,6 +109,7 @@
       justify-content: center;
       align-items: center;
       min-width: 280px;
+      flex-shrink: 0;
     }
 
     .choice-btn {
@@ -184,6 +189,8 @@
       gap: 12px;
       align-items: flex-start;
       min-width: 280px;
+      flex: 0 1 auto;
+      max-width: 400px;
     }
 
     .bet-input-wrapper {
@@ -269,7 +276,7 @@
       min-width: 180px;
       max-width: 200px;
       gap: 10px;
-      margin: 0 auto; /* Centrage horizontal supplémentaire */
+      flex-shrink: 0;
     }
 
     .btn-place-bet {
