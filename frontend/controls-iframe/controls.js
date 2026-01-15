@@ -352,9 +352,12 @@ class FlipControls {
       this.currentBetAmountEl.textContent = `${this.currentBet.amount.toFixed(2)} STARS`;
       this.currentBetChoiceEl.textContent = `on ${this.currentBet.choice}`;
 
-      // Cacher le bouton complètement (les infos sont dans current-bet-info en haut)
-      this.betBtn.style.display = 'none';
+      // Mettre à jour le bouton pour afficher le choix et le montant (remplace "PLACE BET")
       this.betBtn.classList.add('bet-placed');
+      this.betBtn.innerHTML = `
+        <span class="bet-choice-display">${this.currentBet.choice}</span>
+        <span class="bet-amount-display">${this.currentBet.amount.toFixed(2)} STARS</span>
+      `;
       this.betBtn.disabled = true;
       this.betAmountEl.disabled = true;
       this.headsBtn.disabled = true;
@@ -368,7 +371,6 @@ class FlipControls {
   }
 
   enableBetting() {
-    this.betBtn.style.display = '';
     this.betBtn.disabled = false;
     this.betBtn.classList.remove('bet-placed');
     this.betBtn.innerHTML = '<span class="bet-button-text">PLACE BET</span>';

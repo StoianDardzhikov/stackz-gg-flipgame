@@ -75,26 +75,20 @@
       position: relative;
       z-index: 1;
       transition: all 0.5s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .coin-letter {
-      font-size: 280px;
-      font-weight: 900;
-      color: #ffd700;
-      text-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 215, 0, 0.6);
-      line-height: 1;
-      font-family: 'Arial Black', 'Segoe UI', sans-serif;
-      letter-spacing: 0;
+    .coin img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 40px rgba(255, 215, 0, 0.4));
     }
 
-    .coin.flipping .coin-letter {
+    .coin.flipping img {
       animation: coinFlip 2.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .coin.edge .coin-letter {
+    .coin.edge img {
       animation: edgeBalance 2s ease-in-out infinite;
     }
 
@@ -178,11 +172,10 @@
     }
 
     .round-number {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #888;
-      margin-top: 10px;
-      letter-spacing: 2px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fff;
+      margin-top: 5px;
     }
 
     /* Countdown - below status, close to coin */
@@ -331,38 +324,35 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2rem;
-      font-weight: 900;
+      font-size: 1.2rem;
+      font-weight: bold;
       flex-shrink: 0;
       border: 2px solid;
       position: relative;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-      line-height: 1;
-      overflow: hidden;
+    }
+
+    .history-item img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
     }
 
     .history-item.heads {
-      background: rgba(255, 0, 255, 0.3);
+      background: rgba(255, 0, 255, 0.2);
       border-color: #ff00ff;
-      box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
-      color: #ff00ff;
-      text-shadow: 0 0 20px rgba(255, 0, 255, 1);
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
     }
 
     .history-item.tails {
-      background: rgba(138, 43, 226, 0.3);
+      background: rgba(138, 43, 226, 0.2);
       border-color: #8a2be2;
-      box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
-      color: #8a2be2;
-      text-shadow: 0 0 20px rgba(138, 43, 226, 1);
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
     }
 
     .history-item.edge {
-      background: rgba(255, 215, 0, 0.3);
+      background: rgba(255, 215, 0, 0.2);
       border-color: #ffd700;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-      color: #ffd700;
-      text-shadow: 0 0 20px rgba(255, 215, 0, 1);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
     }
 
     /* Waiting state */
@@ -404,7 +394,7 @@
     <div class="coin-container">
       <div class="coin-glow"></div>
       <div class="coin" id="coin">
-        <div id="coinLetter" class="coin-letter">H</div>
+        <img id="coinImage" src="assets/coins/heads.png" alt="Coin">
       </div>
     </div>
 

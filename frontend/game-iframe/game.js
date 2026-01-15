@@ -10,7 +10,7 @@ class FlipGame {
 
     // DOM elements
     this.coinEl = document.getElementById('coin');
-    this.coinLetterEl = document.getElementById('coinLetter');
+    this.coinImageEl = document.getElementById('coinImage');
     this.resultTextEl = document.getElementById('resultText');
     this.statusTextEl = document.getElementById('statusText');
     this.roundNumberEl = document.getElementById('roundNumber');
@@ -113,7 +113,7 @@ class FlipGame {
     this.coinEl.classList.remove('flipping', 'edge');
     
     // Reset coin to heads position
-    this.coinLetterEl.textContent = 'H';
+    this.coinImageEl.src = 'assets/coins/heads.png';
 
     // Start countdown (30 seconds)
     this.startCountdown(30);
@@ -138,8 +138,8 @@ class FlipGame {
     // Hide betting timer
     this.hideBettingTimer();
 
-    // Get letter based on result
-    const letter = this.getCoinLetter(data.result);
+    // Change coin image based on result
+    const imagePath = this.getCoinImagePath(data.result);
     
     // Hide result text during animation
     this.resultTextEl.textContent = '';
@@ -150,7 +150,7 @@ class FlipGame {
       this.coinEl.classList.add('flipping');
       setTimeout(() => {
         this.coinEl.classList.remove('flipping');
-        this.coinLetterEl.textContent = letter;
+        this.coinImageEl.src = imagePath;
         this.coinEl.classList.add('edge');
         // Show result text after animation completes
         this.resultTextEl.textContent = data.result;
@@ -159,7 +159,7 @@ class FlipGame {
       this.coinEl.classList.add('flipping');
       setTimeout(() => {
         this.coinEl.classList.remove('flipping');
-        this.coinLetterEl.textContent = letter;
+        this.coinImageEl.src = imagePath;
         // Show result text after animation completes
         this.resultTextEl.textContent = data.result;
       }, 2500);
@@ -172,8 +172,8 @@ class FlipGame {
     this.currentResult = data.result;
     this.roundIdEl.textContent = data.roundId;
     
-    const letter = this.getCoinLetter(data.result);
-    this.coinLetterEl.textContent = letter;
+    const imagePath = this.getCoinImagePath(data.result);
+    this.coinImageEl.src = imagePath;
     
     if (data.result === 'EDGE') {
       this.coinEl.classList.add('edge');
@@ -189,8 +189,8 @@ class FlipGame {
     this.roundStatus = 'finished';
     this.currentResult = data.result;
 
-    const letter = this.getCoinLetter(data.result);
-    this.coinLetterEl.textContent = letter;
+    const imagePath = this.getCoinImagePath(data.result);
+    this.coinImageEl.src = imagePath;
     
     if (data.result === 'EDGE') {
       this.coinEl.classList.add('edge');
@@ -216,15 +216,16 @@ class FlipGame {
     this.renderHistory();
   }
 
-  getCoinLetter(result) {
+  getCoinImagePath(result) {
     if (result === 'HEADS') {
-      return 'H';
+      return 'assets/coins/heads.png';
     } else if (result === 'TAILS') {
-      return 'T';
+      return 'assets/coins/tails.png';
     } else if (result === 'EDGE') {
-      return 'E';
+      // Alternate between edge1 and edge2 for variety
+      return Math.random() > 0.5 ? 'assets/coins/edge1.png' : 'assets/coins/edge2.png';
     }
-    return 'H';
+    return 'assets/coins/heads.png';
   }
 
   extractRoundNumber(roundId) {
@@ -315,10 +316,11 @@ class FlipGame {
       const item = document.createElement('div');
       item.className = `history-item ${round.result.toLowerCase()}`;
       
-      // Add letter only - clear any other content
-      const letter = this.getCoinLetter(round.result);
-      item.textContent = letter;
-      item.innerHTML = letter; // Ensure only letter is displayed
+      // Add small coin image
+      const img = document.createElement('img');
+      img.src = this.getCoinImagePath(round.result);
+      img.alt = round.result;
+      item.appendChild(img);
       
       item.title = `Round: ${round.id} - ${round.result}`;
       this.historyBarEl.appendChild(item);
