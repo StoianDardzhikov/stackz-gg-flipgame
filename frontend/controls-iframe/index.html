@@ -182,7 +182,7 @@
       display: flex;
       flex-direction: row;
       gap: 12px;
-      align-items: flex-start;
+      align-items: stretch;
       min-width: 280px;
     }
 
@@ -213,6 +213,9 @@
       text-align: center;
       outline: none;
       transition: all 0.3s;
+      flex: 1;
+      min-height: 0;
+      box-sizing: border-box;
     }
 
     .bet-input:focus {
@@ -230,9 +233,10 @@
     .quick-bets {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: 1fr;
+      grid-template-rows: repeat(3, 1fr);
       gap: 8px;
       min-width: 120px;
+      height: fit-content;
     }
 
     .quick-bet-btn {
